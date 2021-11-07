@@ -5,8 +5,8 @@ import pandas as pd
 test = mylib.get_traffic_BaiduAPI()
 
 # 获取实时路况，bounds类型，
-test.get_traffic(get_type='bounds',path='C:/Users/chenq/Desktop/test/',
-                    file_read='新建文本文档.txt',file_write='traffic_bounds_500m.txt')
+test.get_traffic(get_type='bounds',path='C:/Users/chenq/Desktop/test/', ak='FWYMgKbGtLlVSutqWqRQPSOMRKQvAika',
+                    file_read='bounds坐标-500m.txt',file_write='traffic_bounds_500m.txt')
 
 # # 以下为提取所有道路名称
 # # 将获取得到的数据进行分列

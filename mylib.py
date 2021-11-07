@@ -28,8 +28,8 @@ class extract_content_2words(object):
 # 百度实时路况类
 class get_traffic_BaiduAPI(object):
     def __init__(self):
-        self.ak="FWYMgKbGtLlVSutqWqRQPSOMRKQvAika"
-        self.path = 'd:/test/'
+        self.ak=''
+        self.path = ''
         self.traffic_list = []
         self.get_type_list = {'center': 'http://api.map.baidu.com/traffic/v1/around',
                               'road_name': 'https://api.map.baidu.com/traffic/v1/road',
@@ -46,9 +46,9 @@ class get_traffic_BaiduAPI(object):
                                      'road_name': '',
                                      'city': '郑州市'}}
 
-    # 获取实时路况的方法
-    def get_traffic(self, get_type: str, path: str, file_read: str, file_write: str = 'export', around_radius: int = 2000,
-                    ak: str = "FWYMgKbGtLlVSutqWqRQPSOMRKQvAika", city: str = '郑州市') -> list:
+    # 获取实时路况的方法，返回list类型
+    def get_traffic(self, get_type: str, path: str, file_read: str, ak: str, file_write: str = 'export',
+                    around_radius: int = 2000, city: str = '郑州市') -> list:
         if path != None: self.path = path
         if ak != None: self.ak = ak
         # 不同类型实时路况的参数表更新
@@ -56,7 +56,6 @@ class get_traffic_BaiduAPI(object):
         self.params[get_type]['radius'] = around_radius
         self.params[get_type]['city'] = city
         # 变量初始化
-
         # Web API调用url
         get_ulr = self.get_type_list[get_type]
         # 文件操作
@@ -77,20 +76,7 @@ class get_traffic_BaiduAPI(object):
         # 返回一个列表
         return self.traffic_list
 
-    # 提取爬取返回的json中特定内容，截取两个指定字符串之间的字符串
-    def extract_content_2words(self, path: str, file_read: str, word_start: str, word_end: str) -> list:
-        if path != None: self.path = path
-        with open(self.path+file_read, 'r', encoding='utf-8') as f:
-            data = f.read()
-            # 定义正则表达式规则pattern
-            pattern = re.compile(word_start+'(.+?)'+word_end)
-            result = pattern.findall(data)
-        if result != []:
-            return result
-        else:
-            print('没有找到')
-            return None
-
+    # 提取json文件中的某一组数据
     def split_data(self,path: str,file_read:str,file_write:str,split_column:str,
                     encoding:str='utf-8'):
         if path != None: self.path = path
@@ -113,7 +99,19 @@ class get_traffic_BaiduAPI(object):
             data_split.to_excel(writer,sheet_name='splited_'+split_column)
         return data_split
 
-
+    # 提取爬取返回的json中特定内容，截取两个指定字符串之间的字符串
+    def extract_content_2words(self, path: str, file_read: str, word_start: str, word_end: str) -> list:
+        if path != None: self.path = path
+        with open(self.path+file_read, 'r', encoding='utf-8') as f:
+            data = f.read()
+            # 定义正则表达式规则pattern
+            pattern = re.compile(word_start+'(.+?)'+word_end)
+            result = pattern.findall(data)
+        if result != []:
+            return result
+        else:
+            print('没有找到')
+            return None
 
 # 参数列表示例，全部txt文件
 # around: 34.73099,113.663766
